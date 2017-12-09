@@ -8,10 +8,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
-const appData = require('../data.json')
-const seller = appData.seller
-const goods = appData.goods
-const ratings = appData.ratings
+const HOST = process.env.HOST
+const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -19,39 +17,19 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
-  
+
   // these devServer options should be customized in /config/index.js
   devServer: {
-    before(app) {
-      app.get('/api/seller', function(req, res) {
-        res.json({
-          errno: 0,
-          data: seller
-        })
-      });
-      app.get('/api/goods', function(req, res) {
-        res.json({
-          errno: 0,
-          data: goods
-        })
-      });
-      app.get('/api/ratings', function(req, res) {
-        res.json({
-          errno: 0,
-          data: ratings
-        })
-      });
-    },
     clientLogLevel: 'warning',
     historyApiFallback: true,
     hot: true,
-    host: process.env.HOST || config.dev.host,
-    port: process.env.PORT || config.dev.port,
+    compress: true,
+    host: HOST || config.dev.host,
+    port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
-    overlay: config.dev.errorOverlay ? {
-      warnings: false,
-      errors: true,
-    } : false,
+    overlay: config.dev.errorOverlay
+      ? { warnings: false, errors: true }
+      : false,
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
     quiet: true, // necessary for FriendlyErrorsPlugin
@@ -62,7 +40,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
-    }), 
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     new webpack.NoEmitOnErrorsPlugin(),
@@ -89,7 +67,7 @@ module.exports = new Promise((resolve, reject) => {
       // Add FriendlyErrorsPlugin
       devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
         compilationSuccessInfo: {
-          messages: [`Your application is running here: http://${config.dev.host}:${port}`],
+          messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
         },
         onErrors: config.dev.notifyOnErrors
         ? utils.createNotifierCallback()
