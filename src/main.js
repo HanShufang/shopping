@@ -7,11 +7,14 @@ import axios from 'axios';
 import './library/axiosConfig';
 import localStorageHelper from './library/localStorageHelper';
 import './common/stylus/index.styl';
+import FastClick from 'fastclick';
 
 Vue.config.productionTip = false;
 
 Vue.prototype.$ajax = axios;
 Vue.prototype.$localStorage = localStorageHelper;
+
+FastClick.attach(document.body);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
