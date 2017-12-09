@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>111
+    {{tableData}}
+  </div>
 </template>
 <script>
   export default {
@@ -13,8 +15,10 @@
     },
     methods: {
       queryAccountBtn () {
-        this.$ajax.get('http://localhost:8088/goods.json')
+        this.$ajax.get('/api/goods.json')
           .then((res) => {
+            this.tableData = res
+            console.log(this.tableData)
             console.log(res, '======_queryAccountParams====res')
           })
       }
