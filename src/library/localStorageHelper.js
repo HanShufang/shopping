@@ -1,15 +1,15 @@
 export default {
   get (key) {
     if (!key) {
-      key = this.keyDefault
+      key = this.keyDefault;
     }
-    return JSON.parse(localStorage.getItem(key) || '{}')
+    return JSON.parse(localStorage.getItem(key) || '{}');
   },
   set (option, key) {
     if (!key) {
-      key = this.keyDefault
+      key = this.keyDefault;
     }
-    localStorage.setItem(key, JSON.stringify(option))
+    localStorage.setItem(key, JSON.stringify(option));
   },
   keyDefault: 'vic-user'
-}
+};

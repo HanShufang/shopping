@@ -1,18 +1,18 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
-      redirect: '/header'
+      redirect: '/index'
     },
     {
-      path: '/header',
-      component: resolve => require(['../components/header/header.vue'], resolve)
+      path: '/index',
+      component: resolve => require(['../components/index.vue'], resolve)
     }
   ]
-})
+});
