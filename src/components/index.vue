@@ -57,7 +57,7 @@
           .then((res) => {
             this.goods = res;
             this.$nextTick(function () {
-              this.$refs.contentswiper.xheight = (window.screen.height - 200) + 'px';
+              this.$refs.contentswiper.xheight = (window.screen.height - 174) + 'px';
             });
           });
       }
