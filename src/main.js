@@ -3,9 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+import './library/axiosConfig'
+import localStorageHelper from './library/localStorageHelper'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$ajax = axios
+Vue.prototype.$localStorage = localStorageHelper
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -1,5 +1,6 @@
 require('./check-versions')()
 
+var apiMock = require('../mock/apiMock')
 var config = require('../config')
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
@@ -21,6 +22,10 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+var router = express.Router();
+apiMock.apiMock(router);
+app.use('/api', router);
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
