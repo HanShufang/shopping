@@ -12,21 +12,7 @@ export default new Router({
     },
     {
       path: '/index',
-      component: resolve => require(['../components/index.vue'], resolve),
-      children: [
-        {
-          path: '/goods',
-          component: resolve => require(['../components/goods/goods.vue'], resolve)
-        },
-        {
-          path: '/seller',
-          component: resolve => require(['../components/seller/seller.vue'], resolve)
-        },
-        {
-          path: '/ratings',
-          component: resolve => require(['../components/ratings/ratings.vue'], resolve)
-        }
-      ]
+      component: resolve => require(['components/index.vue'], resolve)
     }
   ]
 });
