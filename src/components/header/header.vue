@@ -1,27 +1,12 @@
 <template>
-  <div>111
-    {{tableData}}
-  </div>
+<div>i am header</div>
 </template>
+
 <script>
   export default {
-    data: function () {
-      return {
-        tableData: []
-      }
-    },
-    mounted () {
-      this.queryAccountBtn()
-    },
-    methods: {
-      queryAccountBtn () {
-        this.$ajax.get('/api/goods.json')
-          .then((res) => {
-            this.tableData = res
-            console.log(this.tableData)
-            console.log(res, '======_queryAccountParams====res')
-          })
-      }
+    data () {
+      return {};
     }
-  }
+  };
 </script>
+
