@@ -26,6 +26,9 @@
                 <div class="price">
                   <span class="now-price">￥{{food.price}}</span><span class="old-price" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <cartcontrol :food="food"></cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
@@ -38,6 +41,7 @@
 <script>
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcart/shopcart';
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
 
   export default {
     props: ['seller', 'goodData'],
@@ -48,7 +52,8 @@
       };
     },
     components: {
-      shopcart
+      shopcart,
+      cartcontrol
     },
     mounted () {
       this.$nextTick(() => {
@@ -75,7 +80,8 @@
           click: true
         }); // new BScroll()第一个参数是个dom,第二个参数是option,probeType属性告诉我们滚动的位置，相当于一个探针
         this.foodScroll = new BScroll(this.$refs.foodWrapper, {
-          probeType: 3
+          probeType: 3,
+          click: true
         });
         this.foodScroll.on('scroll', (pos) => {
           // 这个函数的回调是一个位置
@@ -172,9 +178,9 @@
             .desc, .extra
               font-size: 10px
               color: rgb(147, 153, 159)
+              margin-bottom: 8px
             .desc
               line-height: 12px
-              margin-bottom: 8px
             .extra
               line-height: 10px
               .count
@@ -190,6 +196,10 @@
                 text-decoration: line-through
                 font-size: 10px
                 color: rgb(147, 153, 159)
+            .cartcontrol-wrapper
+              position:absolute
+              right:0
+              bottom:12px
 
 
 </style>

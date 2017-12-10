@@ -37,9 +37,6 @@
         default: 0
       }
     },
-    data () {
-      return {}
-    },
     computed: {
       totalPrice () {
         let total = 0;
