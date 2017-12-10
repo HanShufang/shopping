@@ -11,7 +11,7 @@
       <swiper ref="contentswiper" v-model="index" :show-dots="false">
         <swiper-item :key="0">
           <div class="tab-swiper vux-center">
-            <goods></goods>
+            <goods :seller="info" :goodData="goodData"></goods>
           </div>
         </swiper-item>
         <swiper-item :key="1">
@@ -45,17 +45,25 @@
         demo2: '美食',
         index: 0,
         list2: ['商品', '评价', '商家'],
-        goods: []
+        goodData: [],
+        info: ''
       };
     },
     mounted () {
+      this.queryInfo();
       this.queryGoods();
     },
     methods: {
+      queryInfo () {
+        this.$ajax.get('/api/seller.json')
+          .then((res) => {
+            this.info = res.data.content;
+          });
+      },
       queryGoods () {
         this.$ajax.get('/api/goods.json')
           .then((res) => {
-            this.goods = res;
+            this.goodData = res.data.content;
             this.$nextTick(function () {
               this.$refs.contentswiper.xheight = (window.screen.height - 174) + 'px';
             });

@@ -4,7 +4,7 @@
     <div class="header-con">
       <flexbox>
         <flexbox-item :span="4">
-          <div class="header-img"><img src="static/images/headerImg.jpg" /></div>
+          <div class="header-img"><img src="static/images/headerImg.jpg"/></div>
         </flexbox-item>
         <flexbox-item>
           <div class="flex-demo">2/3</div>
@@ -28,10 +28,6 @@
       };
     },
     mounted () {
-      this.$ajax.get('/api/seller.json')
-        .then((res) => {
-          this.info = res;
-        });
     }
   };
 </script>
@@ -50,6 +46,7 @@
       top: 0
       left: 0
       padding: 24px 12px 18px 24px
+
   .header-img
     height: 88px
     width: 88px

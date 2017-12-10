@@ -32,29 +32,29 @@
         </li>
       </ul>
     </div>
+    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 <script>
   import BScroll from 'better-scroll';
+  import shopcart from 'components/shopcart/shopcart';
 
   export default {
-    name: '',
+    props: ['seller', 'goodData'],
     data () {
       return {
-        goodData: [],
         listHeight: [],
         leftScrollY: 0
       };
     },
+    components: {
+      shopcart
+    },
     mounted () {
-      this.$ajax.get('/api/goods.json')
-        .then((res) => {
-          this.goodData = res.data.content;
-          this.$nextTick(() => {
-            this.initScroll();
-            this.calculateHeight();
-          });
-        });
+      this.$nextTick(() => {
+        this.initScroll();
+        this.calculateHeight();
+      });
     },
     computed: {
       currentIndex () {
