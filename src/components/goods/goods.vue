@@ -2,14 +2,15 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li class="menu-item" v-for="item in goodData">
+        <li class="menu-item" :class="{'current':currentIndex === index}" v-for="(item, index) in goodData"
+            @click="selectMenu(index, $event)">
           <span class="menu-text border-1px">{{item.name}}</span>
         </li>
       </ul>
     </div>
     <div class="food-wrapper" ref="foodWrapper">
       <ul>
-        <li v-for="item in goodData" class="food-list">
+        <li v-for="item in goodData" class="food-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
             <li v-for="food in item.foods" class="food-item border-1px">
@@ -40,7 +41,9 @@
     name: '',
     data () {
       return {
-        goodData: []
+        goodData: [],
+        listHeight: [],
+        leftScrollY: 0
       };
     },
     mounted () {
@@ -49,13 +52,52 @@
           this.goodData = res.data.content;
           this.$nextTick(() => {
             this.initScroll();
+            this.calculateHeight();
           });
         });
     },
+    computed: {
+      currentIndex () {
+        // 计算属性，判断当前得到的food的位置在哪两个区间范围内
+        for (let i = 0; i < this.listHeight.length; i++) {
+          let height1 = this.listHeight[i];
+          let height2 = this.listHeight[i + 1];
+          if (!height2 || (this.leftScrollY >= height1 && this.leftScrollY < height2)) {
+            return i;
+          }
+        }
+        return 0;
+      }
+    },
     methods: {
       initScroll () {
-        this.menuScroll = new BScroll(this.$refs.menuWrapper, {}); // new BScroll()第一个参数是个dom,第二个参数是option
-        this.foodScroll = new BScroll(this.$refs.foodWrapper, {});
+        this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+          click: true
+        }); // new BScroll()第一个参数是个dom,第二个参数是option,probeType属性告诉我们滚动的位置，相当于一个探针
+        this.foodScroll = new BScroll(this.$refs.foodWrapper, {
+          probeType: 3
+        });
+        this.foodScroll.on('scroll', (pos) => {
+          // 这个函数的回调是一个位置
+          this.leftScrollY = Math.abs(Math.round(pos.y));
+        });
+      },
+      calculateHeight () {
+        let foodList = this.$refs.foodWrapper.getElementsByClassName('food-list-hook');
+        let tempheight = 0;
+        this.listHeight.push(tempheight);
+        for (let i = 0; i < foodList.length; i++) {
+          tempheight += foodList[i].clientHeight;
+          this.listHeight.push(tempheight);
+        }
+      },
+      selectMenu (index, event) {
+        if (!event._constructed) {
+          return; // 自己写的点击事件才有_constructed属性，原生的没有
+        }
+        let foodList = this.$refs.foodWrapper.getElementsByClassName('food-list-hook');
+        let el = foodList[index];
+        this.foodScroll.scrollToElement(el, 300);
       }
     }
   };
@@ -82,6 +124,15 @@
         line-height: 14px
         width: 56px
         padding: 0 12px
+        &.current
+          position: relative
+          z-index: 10
+          margin-top: -1px
+          background: #fff
+          color: rgb(240, 20, 20)
+          font-weight: 700
+          .menu-text
+            border-none()
         .menu-text
           display: table-cell
           width: 56px
