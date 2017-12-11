@@ -11,7 +11,6 @@
 </template>
 <script>
   import Vue from 'vue';
-
   export default {
     props: {
       food: {
@@ -28,6 +27,8 @@
         } else {
           this.food.count++;
         }
+        // 将当前点击的位置放在cart.add参数内派发出去，在goods（父）文件中做处理
+        this.$emit('addcart', event.target);
       },
       decreaseCart (event) {
         if (!event._constructed) {
