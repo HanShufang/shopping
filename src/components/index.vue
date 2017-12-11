@@ -11,7 +11,7 @@
       <swiper ref="contentswiper" v-model="index" :show-dots="false">
         <swiper-item :key="0">
           <div class="tab-swiper vux-center">
-            <goods :seller="info" :goodData="goodData"></goods>
+            <goods :seller="info"></goods>
           </div>
         </swiper-item>
         <swiper-item :key="1">
