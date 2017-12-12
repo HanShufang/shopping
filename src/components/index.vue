@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <v-header></v-header>
+      <v-header :seller="seller"></v-header>
       <div class="goods-wrapper">
         <div class="goods">
           <div class="menu-wrapper" ref="menuWrapper">
@@ -66,7 +66,7 @@
     data () {
       return {
         goodData: [],
-        seller: '',
+        seller: {},
         selectedFood: {},
         listHeight: [],
         leftScrollY: 0,
@@ -75,7 +75,12 @@
       };
     },
     mounted () {
-      this.queryInfo();
+      this.$ajax.get('/api/seller.json')
+        .then((res) => {
+          this.$nextTick(() => {
+            this.seller = res.data.content;
+          });
+        });
       this.$ajax.get('/api/goods.json')
         .then((res) => {
           this.goodData = res.data.content;
@@ -111,12 +116,6 @@
       }
     },
     methods: {
-      queryInfo () {
-        this.$ajax.get('/api/seller.json')
-          .then((res) => {
-            this.seller = res.data.content;
-          });
-      },
       initScroll () {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
           click: true
