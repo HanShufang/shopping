@@ -1,9 +1,88 @@
 <template>
-  <div>sssss</div>
+  <transition name="move">
+    <div v-show="showFlag" class="food" ref="food">
+      <div class="food-content">
+        <div class="image-header">
+          <img :src="food.image"/>
+          <div class="back" @click="hideFood">
+            <i class="icon-arrow_lift"></i>
+          </div>
+        </div>
+        <div class="content">
+          <h1 class="title">{{food.name}}</h1>
+          <div class="detail">
+            <span class="sell-count">月售{{food.sellCount}}份</span>
+            <span class="rating">好评率{{food.rating}}%</span>
+          </div>
+          <div class="price">
+            <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
+          </div>
+          <div class="cartcontrol-wrapper">
+            <cartcontrol @add="addFood" :food="food"></cartcontrol>
+          </div>
+          <transition name="fade">
+            <div @click.stop.prevent="addFirst" class="buy" v-show="!food.count || food.count===0">
+              加入购物车
+            </div>
+          </transition>
+        </div>
+        <div class="split"></div>
+        <div class="info" v-show="food.info">
+          <h1 class="title">商品信息</h1>
+          <p class="text">{{food.info}}</p>
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
+  import BScroll from 'better-scroll';
+  import Vue from 'vue';
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
 
+  export default {
+    props: {
+      food: {
+        type: Object
+      }
+    },
+    data () {
+      return {
+        showFlag: false
+      };
+    },
+    components: {
+      cartcontrol
+    },
+    methods: {
+      showFood () {
+        this.showFlag = true;
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$refs.food, {
+              click: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
+        });
+      },
+      hideFood () {
+        this.showFlag = false;
+      },
+      addFirst (event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.$emit('add', event.target);
+        Vue.set(this.food, 'count', 1);
+      },
+      addFood (target) {
+        this.$emit('add', target);
+      }
+    }
+  };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -17,7 +96,8 @@
     z-index: 30
     width: 100%
     background: #fff
-    transform: translate3d(0, 0, 0)
+    transform: translate3d(0, 0, 0);
+    overflow: hidden;
     &.move-enter-active, &.move-leave-active
       transition: all 0.2s linear
     &.move-enter, &.move-leave-active
@@ -96,6 +176,12 @@
         &.fade-enter, &.fade-leave-active
           opacity: 0
           z-index: -1
+    .split
+      width: 100%
+      height: 16px
+      border-top: 1px solid rgba(7, 17, 27, 0.1)
+      border-bottom: 1px solid rgba(7, 17, 27, 0.1)
+      background: #f3f5f7
     .info
       padding: 18px
       .title
@@ -152,9 +238,4 @@
               color: rgb(0, 160, 220)
             .icon-thumb_down
               color: rgb(147, 153, 159)
-
-        .no-rating
-          padding: 16px 0
-          font-size: 12px
-          color: rgb(147, 153, 159)
 </style>
