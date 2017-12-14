@@ -11,8 +11,14 @@ export default new Router({
       redirect: '/index'
     },
     {
+      name: 'index',
       path: '/index',
       component: resolve => require(['components/index.vue'], resolve)
+    },
+    {
+      name: 'order',
+      path: '/order',
+      component: resolve => require(['components/order.vue'], resolve)
     }
   ]
 });

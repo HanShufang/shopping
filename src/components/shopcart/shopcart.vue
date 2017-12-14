@@ -13,7 +13,7 @@
           <div class="desc">另需配送费{{deliveryPrice}}元</div>
         </div>
         <div class="content-right">
-          <div class="pay" :class="payClass">
+          <div class="pay" :class="payClass" @click.stop.prevent="toOrder">
             {{payDesc}}
           </div>
         </div>
@@ -181,11 +181,12 @@
           food.count = 0;
         });
       },
-      pay () {
+      toOrder () {
         if (this.totalPrice < this.minPrice) {
           return;
         }
-        window.alert(`支付${this.totalPrice}元`);
+        this.$router.push({name: 'order', params: {'foodData': this.selectFoods}});
+        // window.alert(`支付${this.totalPrice}元`);
       },
       addFood (target) {
         this.drop(target);
