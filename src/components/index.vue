@@ -71,10 +71,13 @@
         listHeight: [],
         leftScrollY: 0,
         scrollY: 0,
-        food: ''
+        food: '',
+        tempFood: []
       };
     },
     mounted () {
+      this.tempFood = JSON.parse(localStorage.getItem('choosefood'));
+      console.log(this.tempFood, 2222);
       this.$ajax.get('/api/seller.json')
         .then((res) => {
           this.$nextTick(() => {
@@ -105,13 +108,18 @@
       },
       selectFoods () {
         let foods = [];
-        this.goodData.forEach((good) => {
-          good.foods.forEach((food) => {
-            if (food.count) {
-              foods.push(food);
-            }
+        /* if (localStorage.getItem('choosefood') !== '') {
+           let tempFoods = [];
+           foods = tempFoods.concat(this.tempFood);
+         } else {*/
+          this.goodData.forEach((good) => {
+            good.foods.forEach((food) => {
+              if (food.count) {
+                foods.push(food);
+              }
+            });
           });
-        });
+        //}
         return foods;
       }
     },

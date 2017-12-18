@@ -185,6 +185,7 @@
         if (this.totalPrice < this.minPrice) {
           return;
         }
+        localStorage.setItem('choosefood', JSON.stringify(this.selectFoods));
         this.$router.push({name: 'order', params: {'foodData': this.selectFoods}});
         // window.alert(`支付${this.totalPrice}元`);
       },
