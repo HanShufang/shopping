@@ -1,11 +1,11 @@
 <template>
   <div class="order" ref="order">
     <div>
-      <div class="topaddress">
+      <div class="topaddress" @click="toAddress">
         <div v-show="noAddress">请添加一个收货地址<i class="icon-keyboard_arrow_right"></i></div>
         <div v-show="!noAddress">
-          <div class="address-con"><h3>胡歌</h3><span>13187652311</span></div>
-          <div class="address">上海市静安区江宁路凯迪克大厦的说法所发生的速读法上海市静安区江宁路凯迪克大厦的说法所发生的速读法</div>
+          <div class="address-con"><h3>{{addressVal.name}}</h3><span>{{addressVal.phoneNum}}</span></div>
+          <div class="address">{{addressVal.address}}</div>
         </div>
       </div>
       <div class="split"></div>
@@ -39,7 +39,8 @@
     data: function () {
       return {
         noAddress: false,
-        foodList: []
+        foodList: [],
+        addressVal: {}
       };
     },
     mounted () {
@@ -47,6 +48,15 @@
         this.foodList = this.$route.params.foodData;
         this.initOrderScroll();
       });
+      this.$ajax.get('/api/address.json')
+        .then((res) => {
+          if (res.data.content.length !== 0) {
+            this.addressVal = res.data.content[0];
+            console.log(this.addressVal);
+          } else {
+            this.noAddress = true;
+          }
+        });
     },
     computed: {
       totalMoney () {
@@ -62,7 +72,16 @@
     },
     methods: {
       initOrderScroll () {
-        this.orderScroll = new BScroll(this.$refs.order);
+        this.orderScroll = new BScroll(this.$refs.order, {
+          click: true
+        });
+      },
+      toAddress () {
+        if (this.noAddress === false) {
+          this.$router.push({name: 'addressList', params: {}});
+        } else {
+          this.$router.push({name: 'address'});
+        }
       }
     }
   };

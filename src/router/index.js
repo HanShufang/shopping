@@ -19,6 +19,16 @@ export default new Router({
       name: 'order',
       path: '/order',
       component: resolve => require(['components/order.vue'], resolve)
+    },
+    {
+      name: 'addressList',
+      path: '/addressList',
+      component: resolve => require(['components/address/addressList.vue'], resolve)
+    },
+    {
+      name: 'address',
+      path: '/address',
+      component: resolve => require(['components/address/address.vue'], resolve)
     }
   ]
 });

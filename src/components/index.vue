@@ -111,15 +111,15 @@
         /* if (localStorage.getItem('choosefood') !== '') {
            let tempFoods = [];
            foods = tempFoods.concat(this.tempFood);
-         } else {*/
-          this.goodData.forEach((good) => {
-            good.foods.forEach((food) => {
-              if (food.count) {
-                foods.push(food);
-              }
-            });
+         } else { */
+        this.goodData.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count) {
+              foods.push(food);
+            }
           });
-        //}
+        });
+        // }
         return foods;
       }
     },
